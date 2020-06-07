@@ -51,7 +51,7 @@ class Ui_MainWindow(object):
         ####################################################################
         self.countryStack()
         ####################################################################
-        self.graphStack()
+        # self.graphStack()
         ###################################################################
         self.vLayoutCentral.addWidget(self.stackedWidget)
         MainWindow.setCentralWidget(self.centralwidget)
@@ -59,7 +59,7 @@ class Ui_MainWindow(object):
         # FINALIZING MAIN WINDOW
         ####################################################################
         self.retranslateUi(MainWindow)
-        self.stackedWidget.setCurrentIndex(2)
+        self.stackedWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -227,36 +227,15 @@ class Ui_MainWindow(object):
         ####################################################################
         self.stackedWidget.addWidget(self.countryScreenStack)
 
-    def graphStack(self):
-        self.graphScreenStack = QtWidgets.QWidget()
-        self.graphScreenStack.setObjectName("graphScreenStack")
-        self.vLayoutScreenStack = QtWidgets.QVBoxLayout(self.graphScreenStack)
-        self.vLayoutScreenStack.setObjectName("vLayoutScreenStack")
+    # def graphStack(self):
+    #     self.graphScreenStack = QtWidgets.QWidget()
+    #     self.graphScreenStack.setObjectName("graphScreenStack")
+    #     self.vLayoutScreenStack = QtWidgets.QVBoxLayout(self.graphScreenStack)
+    #     self.vLayoutScreenStack.setObjectName("vLayoutScreenStack")
 
 
 
-        # Create the maptlotlib FigureCanvas object, 
-        # which defines a single set of axes as self.axes.
-        sc = MplCanvas(self, width=5, height=4, dpi=100)
-
-        # Create our pandas DataFrame with some simple
-        # data and headers.
-        df = pd.DataFrame([
-           [0, 10], [5, 15], [2, 20], [15, 25], [4, 10], 
-        ], columns=['A', 'B'])
-
-        # plot the pandas DataFrame, passing in the 
-        # matplotlib Canvas axes.
-        df.plot(ax=sc.axes)
-
-        # Create toolbar, passing canvas as first parament, parent (self, the MainWindow) as second.
-        toolbar = NavigationToolbar(sc, self)
-
-        self.vLayoutScreenStack.addWidget(toolbar)
-        self.vLayoutScreenStack.addWidget(sc)
-
-
-        self.stackedWidget.addWidget(self.graphScreenStack)
+    #     self.stackedWidget.addWidget(self.graphScreenStack)
 
 
 

@@ -117,13 +117,15 @@ class CovidData():
 
 	def plotTimeSeries(self, _list, yaxislabel, country, islog):
 		plt.style.use('dark_background')
-		ax = plt.gca()
+		# ax = plt.gca()
 		df = pd.DataFrame(list(zip(self.date,  _list)), 
 		               columns =['Date', 'Value'])
 
 		df['Date'] = pd.to_datetime(df['Date'])
-		df.sort_values('Date', inplace=True)
+		# df.sort_values('Date', inplace=True)
 
+		fig, axes = plt.subplots(nrows=1, ncols=1)
+		# print(axes)
 		plt.gcf().autofmt_xdate()
 
 		plt.title("{} Analysis By Date in {}".format(yaxislabel, country))
@@ -131,21 +133,31 @@ class CovidData():
 		plt.ylabel(yaxislabel)
 
 		if islog:
-			plt.yscale('log')
+			axes.set_yscale('log')
+			log = "(Log Scaled Graph)"
+		else:
+			log = "(Linear Graph)"
+
+		fig = plt.gcf()
+
+		fig.canvas.set_window_title("{} Analysis By Date in {} {}".format(yaxislabel, country, log))
+
+
 
 		plt.tight_layout()
 
 		plt.plot_date(df['Date'], df['Value'], linestyle='solid', marker=".", markersize=5)
-		
+		# df["Value"].plot()
+		# df.plot(x='Date', y='Value',grid = True, ax=axes, logy = True, legend = False)
 		plt.show()
 
-if __name__ == "__main__":
-	covid = CovidData()
-	covid.do_fuzzy_search("canada")
-	covid.updateJSONData()
-	covid.loadJSONData()
-	covid.populate_variables()
-	covid.populate_world_variables()
-	# pprint(len(covid.total_cases))
-	covid.plotTimeSeries(covid.total_cases, "Total Cases", covid.location, True)
+# if __name__ == "__main__":
+# 	covid = CovidData()
+# 	covid.do_fuzzy_search("china")
+# 	covid.updateJSONData()
+# 	covid.loadJSONData()
+# 	covid.populate_variables()
+# 	# covid.populate_world_variables()
+# 	# pprint(len(covid.total_cases))
+# 	covid.plotTimeSeries(covid.total_cases, "Total Cases", covid.location, True)
 	# print(covid.total_world_cases)

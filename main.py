@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow
 import sys
 import pycountry
 
-from design import Ui_MainWindow
+from design import Ui_MainWindow, MplCanvas
 import qtmodern.styles
 import qtmodern.windows
 from covid_data import CovidData
@@ -13,24 +13,13 @@ class Main(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
         super(Main, self).__init__(parent)
         self.setupUi(self)
-        self.center()
-        
+
         self.covid = CovidData()
         self.covid.loadJSONData()
-        self.covid.do_fuzzy_search(pycountry.countries.get(alpha_3=list(self.covid.data.keys())[0]).name.lower())
-        # self.covid.updateJSONData()
-        
+        self.covid.do_fuzzy_search(pycountry.countries.get(alpha_3=list(self.covid.data.keys())[0]).name.lower())        
 
         self.searchStackSetup()
-
         self.searchButton.clicked.connect(self.OpenWindow1)
-        # self.PushButton2.clicked.connect(self.OpenWindow2)
-
-        # self.PushButton3.clicked.connect(self.GoToMain)
-        # self.PushButton4.clicked.connect(self.OpenWindow2)
-
-        # self.PushButton5.clicked.connect(self.GoToMain)
-        # self.PushButton6.clicked.connect(self.OpenWindow1)
 
 
     def OpenWindow1(self):
@@ -49,10 +38,6 @@ class Main(QMainWindow, Ui_MainWindow):
     # def GoToMain(self):
     #     self.QtStack.setCurrentIndex(0)
     def searchStackSetup(self):
-        # movie = QtGui.QMovie("loa.gif")
-        # self.appTitleLabel.setMovie(movie)
-        # self.appTitleLabel.resize(100, 100)
-        # movie.start()
         self.covid.populate_world_variables()
 
         # title = QtGui.QPixmap("title.jpg")
@@ -112,32 +97,40 @@ class Main(QMainWindow, Ui_MainWindow):
     def countryStackSetup(self):
         self.covid.populate_variables()
 
-        self.covidFactsLabel.setText("<br><br><h1 style='color:#2A82DA;'>Current Covid-19 Facts</h1>")
+        self.covidFactsLabel.setText("<h1 style='color:#2A82DA;'>Current Covid-19 Facts</h1>")
         self.covidFactsLabel.setAlignment(QtCore.Qt.AlignCenter)
 
         self.totalCasesLabel.setText("<h3>Total Cases: {}</h3>".format(self.group(self.covid.total_cases[-1])))
         self.totalCasesLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.totalCasesLabel.setStyleSheet("QLabel::hover{background-color : #2A82DA;}")
         self.totalCasesLabel.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.totalCasesLabel.clicked.connect(
+            lambda __list = self.covid.total_cases: self.covid.plotTimeSeries(__list, "Total Cases", self.covid.location, True))
 
         self.newCasesLabel.setText("<h3>New Cases: {}</h3>".format(self.group(self.covid.new_cases[-1])))
         self.newCasesLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.newCasesLabel.setStyleSheet("QLabel::hover{background-color : #2A82DA;}")
         self.newCasesLabel.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.newCasesLabel.clicked.connect(
+            lambda __list = self.covid.new_cases: self.covid.plotTimeSeries(__list, "New Cases", self.covid.location, False))
 
         self.totalDeathsLabel.setText("<h3>Total Deaths: {}</h3>".format(self.group(self.covid.total_deaths[-1])))
         self.totalDeathsLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.totalDeathsLabel.setStyleSheet("QLabel::hover{background-color : #2A82DA;}")
         self.totalDeathsLabel.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.totalDeathsLabel.clicked.connect(
+            lambda __list = self.covid.total_deaths: self.covid.plotTimeSeries(__list, "Total Deaths", self.covid.location, True))
 
         self.newDeathsLabel.setText("<h3>New Deaths: {}</h3>".format(self.group(self.covid.new_deaths[-1])))
         self.newDeathsLabel.setAlignment(QtCore.Qt.AlignCenter)
         self.newDeathsLabel.setStyleSheet("QLabel::hover{background-color : #2A82DA;}")
         self.newDeathsLabel.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.newDeathsLabel.clicked.connect(
+            lambda __list = self.covid.new_deaths: self.covid.plotTimeSeries(__list, "New Deaths", self.covid.location, False))
 
         ###################################################################################
         self.locationLabel.setText(
-            "<br><br><h1 style='color:#2A82DA;'>{}, {}</h1>".format(self.covid.location.title(), self.covid.continent.title()))
+            "<h1 style='color:#2A82DA;'>{}, {}</h1>".format(self.covid.location.title(), self.covid.continent.title()))
         self.locationLabel.setAlignment(QtCore.Qt.AlignCenter)
 
         self.flagLabel.setText("<img src = '{}.png'></img>".format(self.covid.location.lower().replace(" ", "-")))
@@ -172,16 +165,6 @@ class Main(QMainWindow, Ui_MainWindow):
 
         self.gdpLabel.setText("<h3>GDP Per Capita: {}</h3>".format(self.group(self.covid.gdp_per_capita)))
         self.gdpLabel.setAlignment(QtCore.Qt.AlignCenter)
-
-    def center(self):
-        # geometry of the main window
-        qr = self.frameGeometry()
-        # center point of screen
-        cp = QtWidgets.QDesktopWidget().availableGeometry().center()
-        # move rectangle's center point to screen's center point
-        qr.moveCenter(cp)
-        # top left of rectangle becomes top left of window centering it
-        self.move(qr.topLeft())
 
     def group(self, number):
         s = '%d' % number
