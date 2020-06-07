@@ -9,6 +9,26 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg, NavigationToolbar2QT as NavigationToolbar
+from matplotlib.figure import Figure
+import pandas as pd
+
+class MplCanvas(FigureCanvasQTAgg):
+
+    def __init__(self, parent=None, width=5, height=4, dpi=100):
+        fig = Figure(figsize=(width, height), dpi=dpi)
+        self.axes = fig.add_subplot(111)
+        super(MplCanvas, self).__init__(fig)
+
+class QLabel2(QtWidgets.QLabel):
+    clicked = QtCore.pyqtSignal()
+
+    def __init__(self, parent=None):
+        QtWidgets.QLabel.__init__(self, parent)
+
+    def mousePressEvent(self, ev):
+        self.clicked.emit()
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -39,7 +59,7 @@ class Ui_MainWindow(object):
         # FINALIZING MAIN WINDOW
         ####################################################################
         self.retranslateUi(MainWindow)
-        self.stackedWidget.setCurrentIndex(0)
+        self.stackedWidget.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -52,9 +72,16 @@ class Ui_MainWindow(object):
         self.vLayoutMainStack = QtWidgets.QVBoxLayout(self.mainScreenStack)
         self.vLayoutMainStack.setObjectName("vLayoutMainStack")
 
+        # self.vLayoutMainStack.setContentsMargins(10, 5, 10, 100)
+        self.vLayoutMainStack.setSpacing(5)
+
         self.appTitleLabel = QtWidgets.QLabel(self.mainScreenStack)
         self.appTitleLabel.setObjectName("label")
         self.vLayoutMainStack.addWidget(self.appTitleLabel)
+
+        self.appDescriptionLabel = QtWidgets.QLabel(self.mainScreenStack)
+        self.appDescriptionLabel.setObjectName("appDescriptionLabel")
+        self.vLayoutMainStack.addWidget(self.appDescriptionLabel)
         # self.appTitleLabel.setText("<h1 style='color:red;'><center>Covid19 Global</h1>")
 
         ####################################################################
@@ -85,14 +112,17 @@ class Ui_MainWindow(object):
         self.searchBar = QtWidgets.QLineEdit(self.mainScreenStack)
         self.searchBar.setObjectName("searchBar")
         self.hLayoutSearch.addWidget(self.searchBar)
+        self.searchBar.setPlaceholderText("Search by country name...")
+        # self.searchBar.setStyleSheet("""QLineEdit{border-radius: 10;}""")
+        # self.searchBar.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
 
         self.searchButton = QtWidgets.QPushButton(self.mainScreenStack)
         self.searchButton.setObjectName("searchButton")
+        self.searchButton.setText("search")
         self.hLayoutSearch.addWidget(self.searchButton)
 
         self.vLayoutMainStack.addLayout(self.hLayoutSearch)
         ####################################################################
-
         self.stackedWidget.addWidget(self.mainScreenStack)
 
 
@@ -143,9 +173,9 @@ class Ui_MainWindow(object):
         self.diabetesLabel.setObjectName("diabetesLabel")
         self.vLayoutPanel3.addWidget(self.diabetesLabel)
 
-        self.handWashFacLabel = QtWidgets.QLabel(self.countryScreenStack)
-        self.handWashFacLabel.setObjectName("handWashFacLabel")
-        self.vLayoutPanel3.addWidget(self.handWashFacLabel)
+        # self.handWashFacLabel = QtWidgets.QLabel(self.countryScreenStack)
+        # self.handWashFacLabel.setObjectName("handWashFacLabel")
+        # self.vLayoutPanel3.addWidget(self.handWashFacLabel)
 
         self.hospitalBedsLabel = QtWidgets.QLabel(self.countryScreenStack)
         self.hospitalBedsLabel.setObjectName("hospitalBedsLabel")
@@ -173,19 +203,19 @@ class Ui_MainWindow(object):
         self.covidFactsLabel.setObjectName("covidFactsLabel")
         self.vLayoutPanel1.addWidget(self.covidFactsLabel)
 
-        self.totalCasesLabel = QtWidgets.QLabel(self.countryScreenStack)
+        self.totalCasesLabel = QLabel2(self.countryScreenStack)
         self.totalCasesLabel.setObjectName("totalCasesLabel")
         self.vLayoutPanel1.addWidget(self.totalCasesLabel)
 
-        self.newCasesLabel = QtWidgets.QLabel(self.countryScreenStack)
+        self.newCasesLabel = QLabel2(self.countryScreenStack)
         self.newCasesLabel.setObjectName("newCasesLabel")
         self.vLayoutPanel1.addWidget(self.newCasesLabel)
 
-        self.totalDeathsLabel = QtWidgets.QLabel(self.countryScreenStack)
+        self.totalDeathsLabel = QLabel2(self.countryScreenStack)
         self.totalDeathsLabel.setObjectName("totalDeathsLabel")
         self.vLayoutPanel1.addWidget(self.totalDeathsLabel)
 
-        self.newDeathsLabel = QtWidgets.QLabel(self.countryScreenStack)
+        self.newDeathsLabel = QLabel2(self.countryScreenStack)
         self.newDeathsLabel.setObjectName("newDeathsLabel")
         self.vLayoutPanel1.addWidget(self.newDeathsLabel)
 
@@ -202,7 +232,33 @@ class Ui_MainWindow(object):
         self.graphScreenStack.setObjectName("graphScreenStack")
         self.vLayoutScreenStack = QtWidgets.QVBoxLayout(self.graphScreenStack)
         self.vLayoutScreenStack.setObjectName("vLayoutScreenStack")
+
+
+
+        # Create the maptlotlib FigureCanvas object, 
+        # which defines a single set of axes as self.axes.
+        sc = MplCanvas(self, width=5, height=4, dpi=100)
+
+        # Create our pandas DataFrame with some simple
+        # data and headers.
+        df = pd.DataFrame([
+           [0, 10], [5, 15], [2, 20], [15, 25], [4, 10], 
+        ], columns=['A', 'B'])
+
+        # plot the pandas DataFrame, passing in the 
+        # matplotlib Canvas axes.
+        df.plot(ax=sc.axes)
+
+        # Create toolbar, passing canvas as first parament, parent (self, the MainWindow) as second.
+        toolbar = NavigationToolbar(sc, self)
+
+        self.vLayoutScreenStack.addWidget(toolbar)
+        self.vLayoutScreenStack.addWidget(sc)
+
+
         self.stackedWidget.addWidget(self.graphScreenStack)
+
+
 
 # if __name__ == "__main__":
 #     import sys

@@ -104,6 +104,9 @@ class CovidData():
 		self.cvd_death_rate = self.data.get(self.country_id)[-1].get("cvd_death_rate")
 		self.diabetes_prevalence = self.data.get(self.country_id)[-1].get("diabetes_prevalence")
 		self.hospital_beds_per_thousand = self.data.get(self.country_id)[-1].get("hospital_beds_per_thousand")
+		# self.handwashing_facilities = self.data.get(self.country_id)[-1].get("handwashing_facilities")
+		# if self.handwashing_facilities == None:
+		# 	self.handwashing_facilities = "data not available"
 
 	def populate_world_variables(self):
 		self.total_world_cases = self.data.get("WRLD")[-1].get("total_cases")
@@ -121,8 +124,6 @@ class CovidData():
 		df['Date'] = pd.to_datetime(df['Date'])
 		df.sort_values('Date', inplace=True)
 
-		plt.plot_date(df['Date'], df['Value'], linestyle='solid', marker=".", markersize=5)
-
 		plt.gcf().autofmt_xdate()
 
 		plt.title("{} Analysis By Date in {}".format(yaxislabel, country))
@@ -134,6 +135,8 @@ class CovidData():
 
 		plt.tight_layout()
 
+		plt.plot_date(df['Date'], df['Value'], linestyle='solid', marker=".", markersize=5)
+		
 		plt.show()
 
 if __name__ == "__main__":
@@ -144,5 +147,5 @@ if __name__ == "__main__":
 	covid.populate_variables()
 	covid.populate_world_variables()
 	# pprint(len(covid.total_cases))
-	# covid.plotTimeSeries(covid.total_cases, "Total Cases", covid.location, True)
+	covid.plotTimeSeries(covid.total_cases, "Total Cases", covid.location, True)
 	# print(covid.total_world_cases)
