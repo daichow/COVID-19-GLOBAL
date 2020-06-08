@@ -1,8 +1,8 @@
-##Inspiration:
+## Inspiration:
 
 Our idea was brought about by the need to address the concerns that we share about the ongoing Coronavirus pandemic. Particularly, we felt concerned with the spread of information. Among the innumerous online sources which cover Covid-19 material, it is sometimes difficult for the average person to find the exact information they want or know whether it is always coming from a trusted news source. With this in mind, we decided to create our own platform for Covid-19 information that would provide current and trustworthy facts and figures.
 
-##What it does:
+## What it does:
 
 Our project is a desktop application which begins by displaying the current Covid-19 values for the World. These include the total number of cases and deaths, as well as the new number of cases and deaths for the current day. The user then has the option to type into a search bar the name of the country they wish to receive more specific information on. The application would then direct to a new screen where the country flag is generated along with the current Covid-19 facts, health statistics, and demographic values for that country. Furthermore, the user can click on any on the daily Covid-19 values to be redirected to another screen which displays a graph of all recorded values for the country since the beginning of the pandemic. It is important to note that all information is taken directly from a regularly updated online database which gathers its information from health and government agencies such the European Centre for Disease Prevention and Control, UN, and World Bank.
 
@@ -44,7 +44,7 @@ We would like to speed up our application significantly by getting rid of excess
 
 As well, in the future, we would like to package this application to be easily distributable to users of all major operating systems.
 
-##In order to run this code until further updates, please do the following:
+## In order to run this code until further updates, please do the following:
 
 **pip install the following packages:**
 bs4
