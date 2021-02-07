@@ -7,8 +7,11 @@ Our idea was brought about by the need to address the concerns that we share abo
 
 Our project is a desktop application which begins by displaying the current Covid-19 values for the World. These include the total number of cases and deaths, as well as the new number of cases and deaths for the current day. The user then has the option to type into a search bar the name of the country they wish to receive more specific information on. The application would then direct to a new screen where the country flag is generated along with the current Covid-19 facts, health statistics, and demographic values for that country. Furthermore, the user can click on any on the daily Covid-19 values to be redirected to another screen which displays a graph of all recorded values for the country since the beginning of the pandemic. It is important to note that all information is taken directly from a regularly updated online database which gathers its information from health and government agencies such the European Centre for Disease Prevention and Control, UN, and World Bank.
 
+## Featured Images:
 ![gallery1](https://user-images.githubusercontent.com/33791954/107155287-9d70b000-6945-11eb-9fa1-a39f50888760.jpg)
+<br>
 ![gallery2](https://user-images.githubusercontent.com/33791954/107155289-9ea1dd00-6945-11eb-9932-6996be54440b.jpg)
+<br>
 ![gallery3](https://user-images.githubusercontent.com/33791954/107155290-a06ba080-6945-11eb-895e-7fa4fa3bcb93.jpg)
 
 ## How we built it
@@ -51,22 +54,22 @@ As well, in the future, we would like to package this application to be easily d
 
 ## In order to run this code until further updates, please do the following:
 
-**pip install the following packages:**
-bs4
-requests
-pycountries
-pyqt5
-matplotlib
-pandas
-datetime
-qtmodern
-re
-os
-time
-json
+**The following packages must be installed for this project to work:**
+* bs4
+* requests
+* pycountries
+* pyqt5
+* matplotlib
+* pandas
+* datetime
+* qtmodern
+* re
+* os
+* time
+* json
 
 **afterwards, do the following command in terminal/cmd in the folder directory:**
 
-python main.py
+* python main.py
 OR
-python3 main.py
+* python3 main.py
