@@ -1,3 +1,4 @@
+![covid](https://user-images.githubusercontent.com/33791954/107155935-5ab0d700-6949-11eb-80a1-9890635d3dee.jpg)
 ## Inspiration:
 
 Our idea was brought about by the need to address the concerns that we share about the ongoing Coronavirus pandemic. Particularly, we felt concerned with the spread of information. Among the innumerous online sources which cover Covid-19 material, it is sometimes difficult for the average person to find the exact information they want or know whether it is always coming from a trusted news source. With this in mind, we decided to create our own platform for Covid-19 information that would provide current and trustworthy facts and figures.
